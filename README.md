@@ -1,4 +1,4 @@
-Openbsd manual pages for gnu/linux
+```Openbsd manual pages for gnu/linux
 
 requirements:
   fd
@@ -16,3 +16,4 @@ install:
 Usage:
   man_openbsd syle
   man_openbsd 9 style
+```
