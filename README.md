@@ -1,7 +1,7 @@
 ```Openbsd manual pages for gnu/linux
 
 requirements:
-  fd
+  fd - https://github.com/sharkdp/fd
   man
 
 installation requirements:
