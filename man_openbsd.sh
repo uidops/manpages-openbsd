@@ -24,13 +24,16 @@
 #* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-one_method() {
-	manpage=$(fd $1 /opt/manpages-openbsd/man*/ | head -1)
+#manpages_path=/opt/manpages-openbsd
+
+manpages_path=.
+first_method() {
+	manpage=$(find $manpages_path/man*/ -iname "$1*" | head -1)
 	man $manpage
 }
 
-two_method() {
-	manpage="/opt/manpages-openbsd/man$1/$2.$1openbsd.gz"
+second_method() {
+	manpage="$manpages_path/man$1/$2.$1"
 	man $manpage
 }
 
@@ -41,12 +44,12 @@ then
 
 elif [ $# = 1 ];
 then
-	one_method $1
+	first_method $1
 	exit 0
 
 elif [ $# = 2 ];
 then
-	two_method $1 $2
+	second_method $1 $2
 	exit 0
 
 else

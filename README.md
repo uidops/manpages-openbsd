@@ -1,23 +1,17 @@
 ```Openbsd manual pages for gnu/linux
 
-requirements:
-  fd - https://github.com/sharkdp/fd
-  man
+Requirements:
+  > findutils
+  > man
 
-installation requirements:
+Installation requirements:
   git
-  sudo or doas
 
-install (sudo):
-  sudo git clone https://github.com/siruidops/manpages-openbsd /opt/manpages-openbsd
-  sudo cp /opt/manpages-openbsd/man_openbsd.sh /usr/local/bin/man_openbsd
-  sudo chmod +x /usr/local/bin/man_openbsd
+Install:
+  (doas/sudo) git clone https://github.com/uidops/manpages-openbsd /opt/manpages-openbsd
+  (doas/sudo) cp /opt/manpages-openbsd/man_openbsd.sh /usr/local/bin/man_openbsd
+  (doas/sudo) chmod +x /usr/local/bin/man_openbsd
 
-
-install (doas):
-  doas git clone https://github.com/siruidops/manpages-openbsd /opt/manpages-openbsd
-  doas cp /opt/manpages-openbsd/man_openbsd.sh /usr/local/bin/man_openbsd
-  doas chmod +x /usr/local/bin/man_openbsd
 
 Usage:
   man_openbsd syle
