@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbKeyActionEntry 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbKeyActionEntry 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbKeyActionEntry \- Returns a pointer to the key action corresponding to
 group grp and shift level lvl from the two-dimensional table of key actions
@@ -123,14 +123,14 @@ The KeySymMapRec structure is defined as follows:
     #define XkbNumKbdGroups             4
     #define XkbMaxKbdGroup              (XkbNumKbdGroups-1)
     
-    typedef struct {                    /\(** map to keysyms for a single keycode 
+    typedef struct {                    /\&* map to keysyms for a single keycode 
 */
-        unsigned char       kt_index[XkbNumKbdGroups];  /\(** key type index for 
+        unsigned char       kt_index[XkbNumKbdGroups];  /\&* key type index for 
 each group */
-        unsigned char       group_info; /\(** # of groups and out of range group 
+        unsigned char       group_info; /\&* # of groups and out of range group 
 handling */
-        unsigned char       width;      /\(** max # of shift levels for key */
-        unsigned short      offset;     /\(** index to keysym table in syms array 
+        unsigned char       width;      /\&* max # of shift levels for key */
+        unsigned short      offset;     /\&* index to keysym table in syms array 
 */
 } XkbSymMapRec, *XkbSymMapPtr;
 

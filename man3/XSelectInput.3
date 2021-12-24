@@ -45,7 +45,7 @@
 .ds xW Athena X Widgets \- C Language X Toolkit Interface
 .ds xL Xlib \- C Language X Interface
 .ds xC Inter-Client Communication Conventions Manual
-.TH XSelectInput 3 "libX11 1.7.0" "X Version 11" "XLIB FUNCTIONS"
+.TH XSelectInput 3 "libX11 1.7.2" "X Version 11" "XLIB FUNCTIONS"
 .SH NAME
 XSelectInput \- select input events
 .SH SYNTAX
@@ -69,7 +69,6 @@ Events are reported relative to a window.
 If a window is not interested in a device event, it usually propagates to
 the closest ancestor that is interested,
 unless the do_not_propagate mask prohibits it.
-.IN "Event" "propagation"
 .LP
 Setting the event-mask attribute of a window overrides any previous call
 for the same window but not for other clients.

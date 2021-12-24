@@ -45,7 +45,7 @@
 .ds xW Athena X Widgets \- C Language X Toolkit Interface
 .ds xL Xlib \- C Language X Interface
 .ds xC Inter-Client Communication Conventions Manual
-.TH XRecolorCursor 3 "libX11 1.7.0" "X Version 11" "XLIB FUNCTIONS"
+.TH XRecolorCursor 3 "libX11 1.7.2" "X Version 11" "XLIB FUNCTIONS"
 .SH NAME
 XRecolorCursor, XFreeCursor, XQueryBestCursor \- manipulate cursors
 .SH SYNTAX
@@ -112,7 +112,6 @@ The
 .B XQueryBestCursor
 function provides a way to find out what size cursors are actually
 possible on the display.
-.IN "Cursor" "limitations"
 It returns the largest size that can be displayed.
 Applications should be prepared to use smaller cursors on displays that
 cannot support large ones.

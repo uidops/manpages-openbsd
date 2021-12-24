@@ -20,7 +20,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbSAActionSetCtrls 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbSAActionSetCtrls 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbSAActionSetCtrls \- Sets the 
 .I ctrls0 
@@ -135,16 +135,16 @@ from
 .nf
 
     typedef struct _XkbCtrlsAction {
-        unsigned char    type;    /\(** XkbSA_SetControls, XkbSA_LockControls */
-        unsigned char    flags;   /\(** with type, controls enabling and disabling 
+        unsigned char    type;    /\&* XkbSA_SetControls, XkbSA_LockControls */
+        unsigned char    flags;   /\&* with type, controls enabling and disabling 
 of controls */
-        unsigned char    ctrls3;  /\(** ctrls0 through ctrls3 represent the boolean 
+        unsigned char    ctrls3;  /\&* ctrls0 through ctrls3 represent the boolean 
 controls */
-        unsigned char    ctrls2;  /\(** ctrls0 through ctrls3 represent the boolean 
+        unsigned char    ctrls2;  /\&* ctrls0 through ctrls3 represent the boolean 
 controls */
-        unsigned char    ctrls1;  /\(** ctrls0 through ctrls3 represent the boolean 
+        unsigned char    ctrls1;  /\&* ctrls0 through ctrls3 represent the boolean 
 controls */
-        unsigned char    ctrls0;  /\(** ctrls0 through ctrls3 represent the boolean 
+        unsigned char    ctrls0;  /\&* ctrls0 through ctrls3 represent the boolean 
 controls */
     } XkbCtrlsAction;
 .fi

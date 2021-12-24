@@ -20,7 +20,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbGetMap 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbGetMap 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbGetMap \- Allocate an XkbDescRec structure and populate it with the server's 
 keyboard 
@@ -241,18 +241,18 @@ structures in the XkbDescRec represent the major Xkb components.
 
 .nf
 typedef struct {
-   struct _XDisplay * display;      /\(** connection to X server */
-   unsigned short     flags;        /\(** private to Xkb, do not modify */
-   unsigned short     device_spec;  /\(** device of interest */
-   KeyCode            min_key_code; /\(** minimum keycode for device */
-   KeyCode            max_key_code; /\(** maximum keycode for device */
-   XkbControlsPtr     ctrls;        /\(** controls */
-   XkbServerMapPtr    server;       /\(** server keymap */
-   XkbClientMapPtr    map;          /\(** client keymap */
-   XkbIndicatorPtr    indicators;   /\(** indicator map */
-   XkbNamesPtr        names;        /\(** names for all components */
-   XkbCompatMapPtr    compat;       /\(** compatibility map */
-   XkbGeometryPtr     geom;         /\(** physical geometry of keyboard */
+   struct _XDisplay * display;      /\&* connection to X server */
+   unsigned short     flags;        /\&* private to Xkb, do not modify */
+   unsigned short     device_spec;  /\&* device of interest */
+   KeyCode            min_key_code; /\&* minimum keycode for device */
+   KeyCode            max_key_code; /\&* maximum keycode for device */
+   XkbControlsPtr     ctrls;        /\&* controls */
+   XkbServerMapPtr    server;       /\&* server keymap */
+   XkbClientMapPtr    map;          /\&* client keymap */
+   XkbIndicatorPtr    indicators;   /\&* indicator map */
+   XkbNamesPtr        names;        /\&* names for all components */
+   XkbCompatMapPtr    compat;       /\&* compatibility map */
+   XkbGeometryPtr     geom;         /\&* physical geometry of keyboard */
 } XkbDescRec, *XkbDescPtr;
 
 .fi

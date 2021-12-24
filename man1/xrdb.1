@@ -23,7 +23,7 @@
 .\" other dealings in this Software without prior written authorization
 .\" from The Open Group.
 .\"
-.TH XRDB 1 "xrdb 1.2.0" "X Version 11"
+.TH XRDB 1 "xrdb 1.2.1" "X Version 11"
 .SH NAME
 xrdb - X server resource database utility
 .SH SYNOPSIS
@@ -250,6 +250,10 @@ option.  The
 .B \-edit
 option can be used to merge the contents of properties back into the input
 resource file without damaging preprocessor commands.
+.TP 8
+.B \-get \fIname\fP
+This option indicates that the current content of the property matching
+\fIname\fP should be printed onto the standard output.
 .TP 8
 .B \-load
 This option indicates that the input should be loaded as the new value

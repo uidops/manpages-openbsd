@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomOverlayKey 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomOverlayKey 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomOverlayKey \- Add a key to an existing overlay row
 .SH SYNOPSIS
@@ -74,8 +74,8 @@ returns NULL.
 .nf
 
     typedef struct _XkbOverlayKey {
-        XkbKeyNameRec           over;      /\(** name of this overlay key */
-        XkbKeyNameRec           under;     /\(** name of the key under this overlay key */
+        XkbKeyNameRec           over;      /\&* name of this overlay key */
+        XkbKeyNameRec           under;     /\&* name of the key under this overlay key */
     } XkbOverlayKeyRec,*XkbOverlayKeyPtr;
 .fi
 

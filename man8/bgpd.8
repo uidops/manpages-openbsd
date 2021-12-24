@@ -1,4 +1,4 @@
-.\" $OpenBSD: bgpd.8,v 1.65 2021/04/08 11:56:30 danj Exp $
+.\" $OpenBSD: bgpd.8,v 1.71 2021/09/03 07:58:07 claudio Exp $
 .\"
 .\" Copyright (c) 2003, 2004 Henning Brauer <henning@openbsd.org>
 .\"
@@ -14,7 +14,7 @@
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: April 8 2021 $
+.Dd $Mdocdate: September 3 2021 $
 .Dt BGPD 8
 .Os
 .Sh NAME
@@ -23,7 +23,7 @@
 .Sh SYNOPSIS
 .Nm bgpd
 .Bk -words
-.Op Fl cdnv
+.Op Fl cdnvV
 .Op Fl D Ar macro Ns = Ns Ar value
 .Op Fl f Ar file
 .Ek
@@ -203,6 +203,8 @@ Configtest mode.
 Only check the configuration file for validity.
 .It Fl v
 Produce more verbose output.
+.It Fl V
+Show the version and exit.
 .El
 .Sh FILES
 .Bl -tag -width "/var/run/bgpd.sock.<rdomain>" -compact
@@ -317,14 +319,6 @@ has been started.
 .Re
 .Pp
 .Rs
-.%A Q. Vohra
-.%A E. Chen
-.%D May 2007
-.%R RFC 4893
-.%T BGP Support for Four-octet AS Number Space
-.Re
-.Pp
-.Rs
 .%A V. Gill
 .%A J. Heasley
 .%A D. Meyer
@@ -341,6 +335,22 @@ has been started.
 .%D February 2009
 .%R RFC 5492
 .%T Capabilities Advertisement with BGP-4
+.Re
+.Pp
+.Rs
+.%A E. Chen
+.%A J. Yuan
+.%D June 2011
+.%R RFC 6286
+.%T Autonomous-System-Wide Unique BGP Identifier for BGP-4
+.Re
+.Pp
+.Rs
+.%A Q. Vohra
+.%A E. Chen
+.%D Dec 2012
+.%R RFC 6793
+.%T BGP Support for Four-Octet Autonomous System (AS) Number Space
 .Re
 .Pp
 .Rs
@@ -372,6 +382,15 @@ has been started.
 .Re
 .Pp
 .Rs
+.%A K. Patel
+.%A E. Chen
+.%A B. Venkatachalapathy
+.%D July 2014
+.%R RFC 7313
+.%T Enhanced Route Refresh Capability for BGP-4
+.Re
+.Pp
+.Rs
 .%A W. Kumari
 .%A R. Bush
 .%A H. Schiller
@@ -379,6 +398,14 @@ has been started.
 .%D August 2015
 .%R RFC 7607
 .%T Codification of AS 0 Processing
+.Re
+.Pp
+.Rs
+.%A C. Petrie
+.%A T. King
+.%D May 2017
+.%R RFC 8050
+.%T Multi-Threaded Routing Toolkit (MRT) Routing Information Export Format with BGP Additional Path Extensions
 .Re
 .Pp
 .Rs
@@ -438,6 +465,14 @@ has been started.
 .%D March 2018
 .%R RFC 8326
 .%T Graceful BGP Session Shutdown
+.Re
+.Pp
+.Rs
+.%A E. Chen
+.%A J. Scudder
+.%D July 2021
+.%R RFC 9072
+.%T Extended Optional Parameters Length for BGP OPEN Message
 .Re
 .Sh HISTORY
 The

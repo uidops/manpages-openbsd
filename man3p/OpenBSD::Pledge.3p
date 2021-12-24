@@ -71,7 +71,7 @@
 .\" ========================================================================
 .\"
 .IX Title "OpenBSD::Pledge 3p"
-.TH OpenBSD::Pledge 3p "2019-12-30" "perl v5.32.1" "Perl Programmers Reference Guide"
+.TH OpenBSD::Pledge 3p "2021-06-10" "perl v5.32.1" "Perl Programmers Reference Guide"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -101,8 +101,6 @@ interfaces.
 .SH "EXPORT"
 .IX Header "EXPORT"
 Exports \*(L"pledge\*(R" by default.
-.PP
-\&\f(CW\*(C`:all\*(C'\fR will also export \*(L"pledgenames\*(R"
 .SH "FUNCTIONS"
 .IX Header "FUNCTIONS"
 .SS "pledge"
@@ -117,9 +115,6 @@ The \*(L"stdio\*(R" promise is always implied,
 as \fBperl\fR\|(1) itself is useless without it.
 .PP
 Returns true on success, returns false and sets $! on failure
-.SS "pledgenames"
-.IX Subsection "pledgenames"
-Returns a list of the possible promises you can pass to \*(L"pledge\*(R".
 .SH "BUGS AND LIMITATIONS"
 .IX Header "BUGS AND LIMITATIONS"
 Perl is particularly fond of \f(CW\*(C`stdio\*(C'\fR so that promise is always added by
@@ -131,10 +126,10 @@ Perl is particularly fond of \f(CW\*(C`stdio\*(C'\fR so that promise is always a
 <http://man.openbsd.org/pledge.2>
 .SH "AUTHOR"
 .IX Header "AUTHOR"
-Andrew Fresh, <afresh1@OpenBSD.org>
+Andrew Hewus Fresh, <afresh1@OpenBSD.org>
 .SH "LICENSE AND COPYRIGHT"
 .IX Header "LICENSE AND COPYRIGHT"
-Copyright (C) 2015 by Andrew Fresh <afresh1@OpenBSD.org>
+Copyright (C) 2015,2021 by Andrew Hewus Fresh <afresh1@OpenBSD.org>
 .PP
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above

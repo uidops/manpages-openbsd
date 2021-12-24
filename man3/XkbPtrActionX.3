@@ -20,7 +20,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbPtrActionX 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbPtrActionX 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbPtrActionX \- Returns the high_XXX and low_XXX fields of act converted to a 
 signed int
@@ -93,12 +93,12 @@ structures.
 .nf
 
     typedef struct _XkbPtrAction {
-        unsigned char    type;         /\(** XkbSA_MovePtr */
-        unsigned char    flags;        /\(** determines type of pointer motion */
-        unsigned char    high_XXX;     /\(** x coordinate, high bits*/
-        unsigned char    low_XXX;      /\(** y coordinate, low bits */
-        unsigned char    high_YYY;     /\(** x coordinate, high bits */
-        unsigned char    low_YYY;      /\(** y coordinate, low bits */
+        unsigned char    type;         /\&* XkbSA_MovePtr */
+        unsigned char    flags;        /\&* determines type of pointer motion */
+        unsigned char    high_XXX;     /\&* x coordinate, high bits*/
+        unsigned char    low_XXX;      /\&* y coordinate, low bits */
+        unsigned char    high_YYY;     /\&* x coordinate, high bits */
+        unsigned char    low_YYY;      /\&* y coordinate, low bits */
     } XkbPtrAction;
 
 .fi    

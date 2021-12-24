@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomOverlayRow 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomOverlayRow 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomOverlayRow \- Add a row to an existing overlay
 .SH SYNOPSIS
@@ -77,10 +77,10 @@ space for the overlay.
 .nf
 
     typedef struct _XkbOverlayRow {
-        unsigned short      row_under;    /\(** index into the row under this overlay row */
-        unsigned short      num_keys;     /\(** number of keys in the keys array */
-        unsigned short      sz_keys;      /\(** size of the keys array */
-        XkbOverlayKeyPtr    keys;         /\(** array of keys in the overlay row */
+        unsigned short      row_under;    /\&* index into the row under this overlay row */
+        unsigned short      num_keys;     /\&* number of keys in the keys array */
+        unsigned short      sz_keys;      /\&* size of the keys array */
+        XkbOverlayKeyPtr    keys;         /\&* array of keys in the overlay row */
     } XkbOverlayRowRec,*XkbOverlayRowPtr;
 
 .fi

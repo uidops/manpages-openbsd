@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomKeyAlias 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomKeyAlias 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomKeyAlias \- Add one key alias to an existing keyboard geometry 
 description
@@ -77,8 +77,8 @@ function.
 .nf
 
     typedef struct {
-        char            real[XkbKeyNameLength];   /\(** this key name must be in the keys array */
-        char            alias[XkbKeyNameLength];  /\(** symbolic key name as alias for the key */
+        char            real[XkbKeyNameLength];   /\&* this key name must be in the keys array */
+        char            alias[XkbKeyNameLength];  /\&* symbolic key name as alias for the key */
     } XkbKeyAliasRec,*XkbKeyAliasPtr;
 .fi
 .SH "SEE ALSO"

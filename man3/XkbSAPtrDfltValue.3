@@ -20,7 +20,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbSAPtrDfltValue 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbSAPtrDfltValue 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbSAPtrDfltValue \- Returns the valueXXX field of act converted to a signed int
 .SH SYNOPSIS
@@ -98,10 +98,10 @@ converted to a signed int.
 .nf
 
     typedef struct _XkbPtrDfltAction {
-        unsigned char    type;      /\(** XkbSA_SetPtrDflt */
-        unsigned char    flags;     /\(** controls the pointer button number */
-        unsigned char    affect;    /\(** XkbSA_AffectDfltBtn */
-        char             valueXXX;  /\(** new default button member */
+        unsigned char    type;      /\&* XkbSA_SetPtrDflt */
+        unsigned char    flags;     /\&* controls the pointer button number */
+        unsigned char    affect;    /\&* XkbSA_AffectDfltBtn */
+        char             valueXXX;  /\&* new default button member */
     } XkbPtrDfltAction;
 
 .fi

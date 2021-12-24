@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomOverlay 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomOverlay 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomOverlay \- Add one overlay to a section
 .SH SYNOPSIS
@@ -78,12 +78,12 @@ function.
 .nf
 
     typedef struct _XkbOverlayRec {
-        Atom                  name;            /\(** overlay name */
-        XkbSectionPtr         section_under;   /\(** the section under this overlay */
-        unsigned short        num_rows;        /\(** number of rows in the rows array */
-        unsigned short        sz_rows;         /\(** size of the rows array */
-        XkbOverlayRowPtr      rows;            /\(** array of rows in the overlay */
-        XkbBoundsPtr          bounds;          /\(** bounding box for the overlay */
+        Atom                  name;            /\&* overlay name */
+        XkbSectionPtr         section_under;   /\&* the section under this overlay */
+        unsigned short        num_rows;        /\&* number of rows in the rows array */
+        unsigned short        sz_rows;         /\&* size of the rows array */
+        XkbOverlayRowPtr      rows;            /\&* array of rows in the overlay */
+        XkbBoundsPtr          bounds;          /\&* bounding box for the overlay */
     } XkbOverlayRec,*XkbOverlayPtr;
     
 .fi

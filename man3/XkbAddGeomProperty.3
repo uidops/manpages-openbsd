@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomProperty 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomProperty 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomProperty \- Add one property to an existing keyboard geometry 
 description
@@ -77,8 +77,8 @@ function.
 .nf
 
     typedef struct _XkbProperty {
-        char *         name;       /\(** property name */
-        char *         value;      /\(** property value */
+        char *         name;       /\&* property name */
+        char *         value;      /\&* property value */
     } XkbPropertyRec,*XkbPropertyPtr;
 
 .fi

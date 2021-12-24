@@ -1,4 +1,4 @@
-.\"	$OpenBSD: fdisk.8,v 1.96 2021/01/30 15:15:20 naddy Exp $
+.\"	$OpenBSD: fdisk.8,v 1.106 2021/09/13 11:44:40 krw Exp $
 .\"
 .\"
 .\" Copyright (c) 1997 Tobias Weingartner
@@ -15,7 +15,7 @@
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: January 30 2021 $
+.Dd $Mdocdate: September 13 2021 $
 .Dt FDISK 8
 .Os
 .Sh NAME
@@ -23,16 +23,11 @@
 .Nd partition table maintenance program
 .Sh SYNOPSIS
 .Nm fdisk
-.Op Fl egvy
-.Op Fl i | u
-.Op Fl b Ar blocks
-.Oo
-.Fl c Ar cylinders
-.Fl h Ar heads
-.Fl s Ar sectors
-.Oc
+.Op Fl evy
+.Op Fl A  | g | i | u
+.Op Fl b Ar blocks Ns Op @ Ns Ar offset Ns Op : Ns Ar type
+.Op Fl l Ar blocks | Fl c Ar cylinders Fl h Ar heads Fl s Ar sectors
 .Op Fl f Ar mbrfile
-.Op Fl l Ar blocks
 .Ar disk
 .Sh DESCRIPTION
 .Nm fdisk
@@ -58,11 +53,49 @@ at install time.
 .Pp
 The options are as follows:
 .Bl -tag -width Ds
-.It Fl b Ar blocks
-A special boot partition of the specified size will be written to disk
-on architectures that need one.
-Only valid with
+.It Fl A
+Modifies existing GPT partitions to allocate all possible space to an
+.Ox
+partition
+and the optional
+.Fl b
+partition.
+The free space is maximized by deleting
+all existing partitions except the boot partitions
+.Sq APFS ISC ,
+.Sq APFS ,
+.Sq APFS Recovry ,
+.Sq HiFive FSBL
+and
+.Sq HiFive BBL .
+.It Fl b Ar blocks Ns Op @ Ns Ar offset Ns Op : Ns Ar type
+Configures a special boot partition of the specified number of blocks, offset
+and type.
+.Ar offset
+defaults to the first available block, and
+.Ar type
+defaults to
+.Sq EF .
+.Pp
+The
+.Ox
+partition will follow the boot partition and use the remaining
+available space.
+.Pp
+Can only be used when initializing
+.Ar disk
+with
+.Fl A ,
+.Fl g ,
+or
 .Fl i .
+If
+.Fl A
+or
+.Fl g
+is specified, only the
+.Ar blocks
+value is used.
 .It Xo
 .Fl c Ar cylinders
 .Fl h Ar heads
@@ -79,12 +112,6 @@ These figures are taken from the in-core disklabel
 or values that
 .Em /boot
 has passed to the kernel.
-.Pp
-Only one of
-.Fl chs
-or
-.Fl l
-can be specified.
 .It Fl e
 Use the
 .Nm
@@ -97,73 +124,40 @@ Specifies an alternate MBR template file.
 The default file is
 .Pa /usr/mdec/mbr .
 .It Fl g
-A protective MBR and a default GPT will be written to disk.
-The default GPT will have a single
+A default GPT, including a protective MBR, will be written to
+.Ar disk .
+The default GPT has a single
 .Ox
-partition containing all available space not allocated by a
-.Fl b
-specification.
-Only valid with
-.Fl i .
+partition containing all available space not allocated by
+.Fl b .
 .It Fl i
-Requests that the partition table data be re-initialized.
-In this mode,
-.Nm
-will completely overwrite the primary MBR bootcode and MBR partition table.
-.Pp
-If
-.Fl g
-is not specified then the MBR will be overwritten by
-the default MBR template
+A default MBR will be written to
+.Ar disk .
+The default MBR will be read from
+the file specified by
+.Fl f ,
+the default file
 .Pa /usr/mdec/mbr
-(or the one optionally specified by the
-.Fl f
-flag).
-In the default template, MBR partition number 3 will be configured as an
+or the built-in default.
+Normally the default MBR has a single
 .Ox
-MBR partition containing all available space not allocated by a
-.Fl b
-specification.
-.Pp
-Only one of
-.Fl i
-or
-.Fl u
-can be specified.
+partition containing all available space not allocated by
+.Fl b .
 .It Fl l Ar blocks
-Specify the number of blocks in the disk, and force the MBR to be in LBA
-mode only.
-.Pp
-Only one of
-.Fl chs
-or
-.Fl l
-can be specified.
+Treat
+.Ar disk
+as if it has the specified number of blocks.
 .It Fl u
 Update MBR bootcode, preserving existing MBR partition table.
 The MBR bootcode extends from offset 0x000 to the start of the MBR partition
 table at offset 0x1BE.
-It is similar to the
-.Fl i
-flag, except the existing MBR partition table is preserved.
 This is useful for writing new MBR bootcode onto an existing drive, and is
 equivalent to the DOS command
 .Dq FDISK /MBR .
 Note that this option will overwrite the NT disk signature, if present.
-.Pp
-Only one of
-.Fl i
-or
-.Fl u
-can be specified.
 .It Fl v
 Print the contents of the MBR, the Primary GPT and the Secondary GPT.
 Also print more detailed GPT header and partition entry information.
-Cannot be used with
-.Fl i ,
-.Fl u ,
-or
-.Fl e .
 .It Fl y
 Avoid asking yes/no questions when not desirable.
 .It Ar disk
@@ -185,10 +179,12 @@ or
 .Sh TYPICAL LAYOUT
 When called with no special flags,
 .Nm
-prints the partition table of the specified disk.
+prints the partition table of the
+.Ar disk .
 .Pp
-If the disk does not contain a valid GPT the contents
-of the MBR are displayed.
+If
+.Ar disk
+does not contain a valid GPT the contents of the MBR are displayed.
 For example:
 .Bd -literal -offset 1n
 # fdisk sd0
@@ -240,7 +236,9 @@ for the system to be able to boot and use the drive correctly.
 These values must be kept correctly synchronized or a variety of
 problems develop which are very difficult to diagnose.
 .Pp
-If the disk contains a protective MBR and a valid GPT, the contents of the GPT
+If
+.Ar disk
+contains a protective MBR and a valid GPT, the contents of the GPT
 are displayed.
 For example:
 .Bd -literal -offset 1n
@@ -256,7 +254,7 @@ partitions that span the whole disk.
 The first partition is a 960 sector EFI Sys partition;
 the second is a 7764929 sector
 .Ox
-partition using the remainder of the disk.
+partition using the remaing space.
 The fields of the output are:
 .Bl -tag -width "type"
 .It Em "#"
@@ -371,23 +369,27 @@ Display this manual page.
 .It Cm reinit Op Cm gpt | Cm mbr
 Initialize the currently selected, in-memory copy of the
 boot block.
+.Pp
+By default an MBR is initialized.
 If
 .Cm gpt
 is specified a protective MBR and a GPT are initialized.
-If
-.Cm mbr
-is specified only an MBR is initialized.
-If neither
-.Cm mbr
-nor
-.Cm gpt
-are specified then a protective MBR and a GPT are initialized if a protective
-MBR already exists.
-Otherwise only an MBR is initialized.
-.It Cm disk
+.It Cm disk Op Ar unit
 Display the current drive geometry that
 .Nm
 probed using kernel provided information and various heuristics.
+A
+.Ar unit
+.Sq b ,
+.Sq k ,
+.Sq m ,
+.Sq g ,
+or
+.Sq t
+may be appended to request that the size of
+.Ar disk
+be shown as bytes, kilobytes, megabytes, gigabytes,
+or terabytes instead of sectors.
 The disk geometry may be changed at this point.
 Not available when editing a GPT.
 .It Cm edit Ar #

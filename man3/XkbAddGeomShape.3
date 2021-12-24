@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomShape 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomShape 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomShape \- Add a shape to a keyboard geometry
 .SH SYNOPSIS
@@ -75,13 +75,13 @@ number of geometry shapes, use
 .nf
 
     typedef struct _XkbShape {
-        Atom              name;           /\(** shape's name */
-        unsigned short    num_outlines;   /\(** number of outlines for the shape */
-        unsigned short    sz_outlines;    /\(** size of the outlines array */
-        XkbOutlinePtr     outlines;       /\(** array of outlines for the shape */
-        XkbOutlinePtr     approx;         /\(** pointer into the array to the approximating outline */
-        XkbOutlinePtr     primary;        /\(** pointer into the array to the primary outline */
-        XkbBoundsRec      bounds;         /\(** bounding box for the shape; encompasses all outlines */
+        Atom              name;           /\&* shape's name */
+        unsigned short    num_outlines;   /\&* number of outlines for the shape */
+        unsigned short    sz_outlines;    /\&* size of the outlines array */
+        XkbOutlinePtr     outlines;       /\&* array of outlines for the shape */
+        XkbOutlinePtr     approx;         /\&* pointer into the array to the approximating outline */
+        XkbOutlinePtr     primary;        /\&* pointer into the array to the primary outline */
+        XkbBoundsRec      bounds;         /\&* bounding box for the shape; encompasses all outlines */
     } XkbShapeRec, *XkbShapePtr;
     
 .fi

@@ -1,4 +1,4 @@
-.\" $OpenBSD: tmux.1,v 1.835 2021/04/15 05:38:11 nicm Exp $
+.\" $OpenBSD: tmux.1,v 1.855 2021/08/27 17:15:57 nicm Exp $
 .\"
 .\" Copyright (c) 2007 Nicholas Marriott <nicholas.marriott@gmail.com>
 .\"
@@ -14,7 +14,7 @@
 .\" IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
 .\" OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: April 15 2021 $
+.Dd $Mdocdate: August 27 2021 $
 .Dt TMUX 1
 .Os
 .Sh NAME
@@ -1331,7 +1331,7 @@ specified multiple times.
 .Op Fl cDlLRSU
 .Op Fl A Ar pane:state
 .Op Fl B Ar name:what:format
-.Op Fl C Ar XxY
+.Op Fl C Ar size
 .Op Fl f Ar flags
 .Op Fl t Ar target-client
 .Op Ar adjustment
@@ -1375,7 +1375,17 @@ window, changing the current window in the attached session will reset
 it.
 .Pp
 .Fl C
-sets the width and height of a control mode client.
+sets the width and height of a control mode client or of a window for a
+control mode client,
+.Ar size
+must be one of
+.Ql widthxheight
+or
+.Ql window ID:widthxheight ,
+for example
+.Ql 80x24
+or
+.Ql @0:80x24 .
 .Fl A
 allows a control mode client to trigger actions on a pane.
 The argument is a pane ID (with leading
@@ -1676,8 +1686,14 @@ The following commands are supported in copy mode:
 .It Li "bottom-line" Ta "L" Ta ""
 .It Li "cancel" Ta "q" Ta "Escape"
 .It Li "clear-selection" Ta "Escape" Ta "C-g"
-.It Li "copy-end-of-line [<prefix>]" Ta "D" Ta "C-k"
+.It Li "copy-end-of-line [<prefix>]" Ta "" Ta ""
+.It Li "copy-end-of-line-and-cancel [<prefix>]" Ta "" Ta ""
+.It Li "copy-pipe-end-of-line [<command>] [<prefix>]" Ta "" Ta ""
+.It Li "copy-pipe-end-of-line-and-cancel [<command>] [<prefix>]" Ta "D" Ta "C-k"
 .It Li "copy-line [<prefix>]" Ta "" Ta ""
+.It Li "copy-line-and-cancel [<prefix>]" Ta "" Ta ""
+.It Li "copy-pipe-line [<command>] [<prefix>]" Ta "" Ta ""
+.It Li "copy-pipe-line-and-cancel [<command>] [<prefix>]" Ta "" Ta ""
 .It Li "copy-pipe [<command>] [<prefix>]" Ta "" Ta ""
 .It Li "copy-pipe-no-clear [<command>] [<prefix>]" Ta "" Ta ""
 .It Li "copy-pipe-and-cancel [<command>] [<prefix>]" Ta "" Ta ""
@@ -1782,19 +1798,18 @@ commands) or when the cursor reaches the bottom (for scrolling commands).
 .Ql -no-clear
 variants do not clear the selection.
 .Pp
-The next and previous word keys use space and the
-.Ql - ,
-.Ql _
-and
-.Ql @
-characters as word delimiters by default, but this can be adjusted by
-setting the
+The next and previous word keys skip over whitespace and treat consecutive
+runs of either word separators or other letters as words.
+Word separators can be customized with the
 .Em word-separators
 session option.
 Next word moves to the start of the next word, next word end to the end of the
 next word and previous word to the start of the previous word.
 The three next and previous space keys work similarly but use a space alone as
 the word separator.
+Setting
+.Em word-separators
+to the empty string makes next/previous word equivalent to next/previous space.
 .Pp
 The jump commands enable quick movement within a line.
 For instance, typing
@@ -2103,9 +2118,11 @@ The following keys may be used in tree mode:
 .It Li "q" Ta "Exit mode"
 .El
 .Pp
-After a session, window or pane is chosen,
+After a session, window or pane is chosen, the first instance of
 .Ql %%
-is replaced by the target in
+and all instances of
+.Ql %1
+are replaced by the target in
 .Ar template
 and the result executed as a command.
 If
@@ -2953,6 +2970,8 @@ Ctrl keys may be prefixed with
 .Ql C-
 or
 .Ql ^ ,
+Shift keys with
+.Ql S-
 and Alt (meta) with
 .Ql M- .
 In addition, the following special key names are accepted:
@@ -3418,11 +3437,24 @@ sessions.
 .Xc
 If enabled, the server will exit when there are no attached clients.
 .It Xo Ic extended-keys
-.Op Ic on | off
+.Op Ic on | off | always
 .Xc
-When enabled, extended keys are requested from the terminal and if supported
-are recognised by
-.Nm .
+When
+.Ic on
+or
+.Ic always ,
+the escape sequence to enable extended keys is sent to the terminal, if
+.Nm
+knows that it is supported.
+.Nm
+always recognises extended keys itself.
+If this option is
+.Ic on ,
+.Nm
+will only forward extended keys to applications when they request them; if
+.Ic always ,
+.Nm
+will always forward the keys.
 .It Xo Ic focus-events
 .Op Ic on | off
 .Xc
@@ -3438,7 +3470,9 @@ will write command prompt history on exit and load it from on start.
 .It Ic message-limit Ar number
 Set the number of error or information messages to save in the message log for
 each client.
-The default is 100.
+.It Ic prompt-history-limit Ar number
+Set the number of history items to save in the history file for each type of
+command prompt.
 .It Xo Ic set-clipboard
 .Op Ic on | external | off
 .Xc
@@ -3501,8 +3535,8 @@ capabilities to be set instead,
 is intended for classes of functionality supported in a standard way but not
 reported by
 .Xr terminfo 5 .
-Care must be taken only to configure this with features the terminal actually
-support.
+Care must be taken to configure this only with features the terminal actually
+supports.
 .Pp
 This is an array option where each entry is a colon-separated string made up
 of a terminal type pattern (matched using
@@ -3524,6 +3558,10 @@ Supports extended keys.
 Supports focus reporting.
 .It margins
 Supports DECSLRM margins.
+.It mouse
+Supports
+.Xr xterm 1
+mouse sequences.
 .It overline
 Supports the overline SGR attribute.
 .It rectfill
@@ -3957,9 +3995,6 @@ If set to both, a bell and a message are produced.
 Sets the session's conception of what characters are considered word
 separators, for the purposes of the next and previous word commands in
 copy mode.
-The default is
-.Ql \ -_@ .
-.El
 .Pp
 Available window options are:
 .Pp
@@ -4122,7 +4157,6 @@ see the
 .Sx STYLES
 section.
 Attributes are ignored.
-.Pp
 .It Ic pane-base-index Ar index
 Like
 .Ic base-index ,
@@ -4280,6 +4314,13 @@ The alternate screen feature preserves the contents of the window when an
 interactive application starts and restores it on exit, so that any output
 visible before the application starts reappears unchanged after it exits.
 .Pp
+.It Ic pane-colours[] Ar colour
+The default colour palette.
+Each entry in the array defines the colour
+.Nm
+uses when the colour with that index is requested.
+The index may be from zero to 255.
+.Pp
 .It Xo Ic remain-on-exit
 .Op Ic on | off | failed
 .Xc
@@ -4313,6 +4354,7 @@ For how to specify
 see the
 .Sx STYLES
 section.
+.El
 .El
 .Sh HOOKS
 .Nm
@@ -4376,10 +4418,16 @@ See
 Run when a window has been silent.
 See
 .Ic monitor-silence .
+.It client-active
+Run when a client becomes the latest active client of its session.
 .It client-attached
 Run when a client is attached.
 .It client-detached
 Run when a client is detached
+.It client-focus-in
+Run when focus enters a client
+.It client-focus-out
+Run when focus exits a client
 .It client-resized
 Run when a client is resized.
 .It client-session-changed
@@ -4887,6 +4935,7 @@ The following variables are available, where appropriate:
 .It Li "history_limit" Ta "" Ta "Maximum window history lines"
 .It Li "history_size" Ta "" Ta "Size of history in lines"
 .It Li "hook" Ta "" Ta "Name of running hook, if any"
+.It Li "hook_client" Ta "" Ta "Name of client where hook was run, if any"
 .It Li "hook_pane" Ta "" Ta "ID of pane where hook was run, if any"
 .It Li "hook_session" Ta "" Ta "ID of session where hook was run, if any"
 .It Li "hook_session_name" Ta "" Ta "Name of session where hook was run, if any"
@@ -5361,11 +5410,25 @@ session option.
 .Pp
 Commands related to the status line are as follows:
 .Bl -tag -width Ds
+.It Xo Ic clear-prompt-history
+.Op Fl T Ar prompt-type
+.Xc
+.D1 (alias: Ic clrphist )
+Clear status prompt history for prompt type
+.Ar prompt-type .
+If
+.Fl T
+is omitted, then clear history for all types.
+See
+.Ic command-prompt
+for possible values for
+.Ar prompt-type .
 .It Xo Ic command-prompt
-.Op Fl 1ikNTW
+.Op Fl 1bFikN
 .Op Fl I Ar inputs
 .Op Fl p Ar prompts
 .Op Fl t Ar target-client
+.Op Fl T Ar prompt-type
 .Op Ar template
 .Xc
 Open the command prompt in a client.
@@ -5376,6 +5439,11 @@ to execute commands interactively.
 If
 .Ar template
 is specified, it is used as the command.
+With
+.Fl F ,
+.Ar template
+is expanded as a format.
+.Pp
 If present,
 .Fl I
 is a comma-separated list of the initial text for each prompt.
@@ -5421,14 +5489,20 @@ makes the prompt only accept numeric key presses.
 .Fl i
 executes the command every time the prompt input changes instead of when the
 user exits the command prompt.
+.Pp
 .Fl T
 tells
 .Nm
-that the prompt is for a target which affects what completions are offered when
+the prompt type.
+This affects what completions are offered when
 .Em Tab
-is pressed;
-.Fl W
-is similar but indicates the prompt is for a window.
+is pressed.
+Available types are:
+.Ql command ,
+.Ql search ,
+.Ql target
+and
+.Ql window-target .
 .Pp
 The following keys have a special meaning in the command prompt, depending
 on the value of the
@@ -5453,7 +5527,13 @@ option:
 .It Li "Move cursor to start" Ta "0" Ta "C-a"
 .It Li "Transpose characters" Ta "" Ta "C-t"
 .El
+.Pp
+With
+.Fl b ,
+the prompt is shown in the background and the invoking client does not exit
+until it is dismissed.
 .It Xo Ic confirm-before
+.Op Fl b
 .Op Fl p Ar prompt
 .Op Fl t Ar target-client
 .Ar command
@@ -5470,9 +5550,10 @@ is the prompt to display; otherwise a prompt is constructed from
 It may contain the special character sequences supported by the
 .Ic status-left
 option.
-.Pp
-This command works only from inside
-.Nm .
+With
+.Fl b ,
+the prompt is shown in the background and the invoking client does not exit
+until it is dismissed.
 .It Xo Ic display-menu
 .Op Fl O
 .Op Fl c Ar target-client
@@ -5606,7 +5687,7 @@ lists the format variables and their values.
 forwards any input read from stdin to the empty pane given by
 .Ar target-pane .
 .It Xo Ic display-popup
-.Op Fl CE
+.Op Fl BCE
 .Op Fl c Ar target-client
 .Op Fl d Ar start-directory
 .Op Fl h Ar height
@@ -5646,10 +5727,25 @@ and
 give the width and height - both may be a percentage (followed by
 .Ql % ) .
 If omitted, half of the terminal size is used.
+.Fl B
+does not surround the popup by a border.
 .Pp
 The
 .Fl C
 flag closes any popup on the client.
+.It Xo Ic show-prompt-history
+.Op Fl T Ar prompt-type
+.Xc
+.D1 (alias: Ic showphist )
+Display status prompt history for prompt type
+.Ar prompt-type .
+If
+.Fl T
+is omitted, then show history for all types.
+See
+.Ic command-prompt
+for possible values for
+.Ar prompt-type .
 .El
 .Sh BUFFERS
 .Nm
@@ -6036,6 +6132,10 @@ Disable and enable focus reporting.
 These are set automatically if the
 .Em XT
 capability is present.
+.It Em \&Rect
+Tell
+.Nm
+that the terminal supports rectangle operations.
 .It Em \&Smol
 Enable the overline attribute.
 .It Em \&Smulx

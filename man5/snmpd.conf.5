@@ -1,4 +1,4 @@
-.\" $OpenBSD: snmpd.conf.5,v 1.47 2021/03/09 18:18:55 martijn Exp $
+.\" $OpenBSD: snmpd.conf.5,v 1.58 2021/09/02 05:41:02 martijn Exp $
 .\"
 .\" Copyright (c) 2007, 2008, 2012 Reyk Floeter <reyk@openbsd.org>
 .\"
@@ -14,7 +14,7 @@
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: March 9 2021 $
+.Dd $Mdocdate: September 2 2021 $
 .Dt SNMPD.CONF 5
 .Os
 .Sh NAME
@@ -95,61 +95,142 @@ Routing table information will not be available, but CPU use will be
 reduced during bulk updates.
 The default is
 .Ic no .
-.It Ic listen on Oo Ic tcp | udp Oc Ar address Oo Ic port Ar port Oc Op Ic read | Ic write | Ic notify
-Specify the local address
+.It Ic listen on Oo Ic tcp | udp Oc Ar address Oo Ic port Ar port Oc Op Ar flags
+Specify the local
+.Ar address
 .Xr snmpd 8
-should listen on for incoming SNMP messages.
-The
-.Ic read
-flag specifies if the listen statement accepts get, getnext and bulkget
-requests.
-The
-.Ic write
-flag specifies if the listen statement accepts set requests
-and
-.Ic notify
-flags specifes if the listen statements accepts trapv1 and trapv2 requests.
+should listen on for incoming SNMP messages,
+or
+.Cm any
+to listen on all local IPv4 and IPv6 addresses.
 Multiple
 .Ic listen on
 statements are supported.
+If no
+.Ic listen on
+statement is present, the default is
+.Ic listen on Cm any .
+.Pp
+The
+.Ar flags
+are as follows:
+.Bl -tag -width Ds
+.It Ic read
+Accept get, getnext and bulkget requests.
+.It Ic write
+Accepts set requests.
+.It Ic notify
+Accepts trapv1 and trapv2 requests.
+.It Ic snmpv1
+Enable SNMPv1 subsystem on the listen address.
+.It Ic snmpv2c
+Enable SNMPv2c subsystem on the listen address.
+.It Ic snmpv3
+Enable SNMPv3 subsystem on the listen address.
+.El
+.Pp
 The default protocol is
 .Ic udp .
 The default
 .Ar port
 is 161, unless
 .Ic notify
-is the only listen flags
-which sets the
+is the only permission flag; which sets the
 .Ar port
 to 162.
-If no flags are specified it defaults to
+If no permission flags are specified it defaults to
 .Dq Ic read Ic write ,
 or
 .Ic notify
 when
 .Ar port
 is 162.
+If no subsystem flags are specified it defaults to
+.Ic snmpv3 .
+.Pp
 Having
 .Ic notify
 set requires at least one
 .Ic trap handle
 statement.
+.It Ic engineid Oo Ic pen Ar enterprise Oc Ar format
+Set the snmp engineid, used for instance identification and key
+generation for the
+.Ic user
+.Ar auth
+and
+.Ar key .
+.Ar enterprise
+specifies the private enterprise number of the instance and can be either an
+integer or
+.Ic openbsd
+.Pq default .
+.Pp
+.Ar format
+can be one of the following:
+.Bl -tag -width Ds
+.It Ic ipv4 Ar address
+The engineID's format identifier is set to 1 and the ipv4
+.Ar address
+is used in the format.
+.It Ic ipv6 Ar address
+The engineID's format identifier is set to 2 and the ipv6
+.Ar address
+is used in the format.
+.It Ic mac Ar address
+The engineID's format identifier is set to 3 and the mac
+.Ar address
+is used in the format.
+.It Ic text Ar text
+The engineID's format identifier is set to 4 and the ASCII
+.Ar text
+is used in the format.
+.It Ic octets Ar octetstring
+The engineID's format identifier is set to 5 and the
+.Ar octetstring
+in hexadecimal is used in the format.
+.It Ic hosthash Op Ar hostname
+The engineID's format identifier is set to 129 and the first 27 bytes of the
+sha256 hash of the
+.Ar hostname
+are used in the format.
+This option is only valid for
+.Ar enterprise
+.Ic openbsd .
+If used for the local engineID, then
+.Ar hostname
+defaults to the value of
+.Xr hostname 1 .
+This format is the default.
+.It Ar number Ar octetstring
+The engineID's format identifier is set to
+.Ar number
+and the
+.Ar octetstring
+in hexadecimal is used in the format.
+This format is only available if
+.Ar enterprise
+is not
+.Ic openbsd .
+.It Ic agentid Ar octetstring
+RFC1910 legacy format.
+.Ar octetstring
+must be 8 bytes
+.Pq or 16 characters in hexadecimal format .
+.El
 .It Ic read-only community Ar string
 Specify the name of the read-only community.
-The default value is
-.Ar public .
-.It Ic read-write Pq Ic community Ar string Ic | disabled
-Specify the name of the read-write community, or disallow writes completely.
-The default value is
-.Ar private .
+There is no default value.
+.It Ic read-write Ic community Ar string
+Specify the name of the read-write community.
+There is no default value.
 .It Ic seclevel Pq Ic none | auth | enc
 Specify the lowest security level that
 .Xr snmpd 8
-accepts:
+accepts on SNMPv3:
 .Bl -tag -width "auth" -offset ident
 .It Ic none
 Both authentication and encryption of messages is optional.
-This is the default value.
 .It Ic auth
 Authentication of messages is mandatory.
 .Xr snmpd 8
@@ -158,13 +239,8 @@ Encryption of messages is optional.
 .It Ic enc
 Messages must be encrypted and must have a valid digest for authentication.
 Otherwise they will be discarded.
+This is the default value.
 .El
-.Pp
-If the chosen value is different from
-.Ic none
-.Xr snmpd 8
-will accept only SNMPv3 requests since older versions neither support
-authentication nor encryption.
 .It Ic system contact Ar string
 Specify the name or description of the system contact, typically a
 name or an email address.
@@ -203,11 +279,11 @@ system may provide.
 Refer to the
 .Ar sysServices
 description in the SNMP MIB for details.
+The value is given in decimal.
 .\"XXX describe the complicated services alg here
 .It Ic trap community Ar string
 Specify the name of the trap community.
-The default value is
-.Ar public .
+There is no default value.
 .It Ic trap handle Ar oid Qq Ar command
 Execute
 .Ic command
@@ -232,19 +308,48 @@ statement with a
 flag set.
 Traps over SNMPv3 are currently unsupported.
 .It Xo
-.Ic trap receiver Ar string
+.Ic trap receiver Ar address
 .Op Ic oid Ar oid-string
+.Ic snmpv2c
 .Op Ic community Ar string
 .Op Ic source-address Ar address
 .Xc
-Specify the address or FQDN of a remote trap receiver for outgoing traps
+Specify the
+.Ar address
+or FQDN of a remote trap receiver for outgoing traps
 sent by
 .Xr snmpd 8 .
 This option may be specified multiple times.
-The daemon will send outgoing traps using the revised SNMPv2 format and the
-configured trap community.
+The daemon will send outgoing traps in
+.Ic snmpv2c
+format.
 The default community is specified by the global
 .Ic trap community
+option.
+The IPv4 or IPv6 source address of the traps can be enforced using
+.It Xo
+.Ic trap receiver Ar address
+.Op Ic oid Ar oid-string
+.Op Ic snmpv3
+.Ic user Ar name Oo Ic seclevel Ar level Oc
+.Op Ic source-address Ar address
+.Xc
+Specify the
+.Ar address
+or FQDN of a remote trap receiver for outgoing traps
+sent by
+.Xr snmpd 8 .
+This option may be specified multiple times.
+The daemon will send outgoing traps in
+.Ic snmpv3
+format.
+.Ic user
+must point to an existing global
+.Ic user .
+If
+.Ic seclevel
+is not defined it defaults to the global
+.Ic seclevel
 option.
 The IPv4 or IPv6 source address of the traps can be enforced using
 .Ic source-address .
@@ -292,7 +397,7 @@ algorithm can be either
 or
 .Ic aes
 and defaults to
-.Ic des .
+.Ic aes .
 .Pp
 Any user account that has encryption enabled requires authentication to
 be enabled too.
@@ -326,10 +431,13 @@ Example configuration file.
 .Sh EXAMPLES
 The following example will tell
 .Xr snmpd 8
-to listen on localhost, override the default system OID, set the
-magic services value and provides some custom OID values:
+to listen on localhost for SNMPv2c messages only with the community
+.Dq 8LHQtm1QLGzk ,
+override the default system OID, set the magic services value,
+and provide some custom OID values:
 .Bd -literal -offset indent
-listen on 127.0.0.1
+listen on 127.0.0.1 snmpv2c
+read-only community 8LHQtm1QLGzk
 
 system oid 1.3.6.1.4.1.30155.23.2
 system services 74
@@ -340,17 +448,14 @@ oid 1.3.6.1.4.1.30155.42.2 name myStatus read-only integer 1
 .Pp
 The next example will enforce SNMPv3 with authenticated and encrypted
 communication and the user-based security model.
-The configuration defines two users,
-the first one is using the
-.Ic aes
-encryption algorithm and the second one the default
-.Ic des
-algorithm.
+The configuration defines several users using varying encryption and
+authentication algorithms.
 .Bd -literal -offset indent
 seclevel enc
 
-user "hans" authkey "password123" enc aes enckey "321drowssap"
-user "sophie" authkey "password456" enckey "654drowssap"
+user "mgmt" auth hmac-sha256 authkey "password123" enc aes enckey "321drowssap"
+user "hans" auth hmac-sha1 authkey "password456" enc aes enckey "654drowssap"
+user "sophie" auth hmac-md5 authkey "password789" enc des enckey "987drowssap"
 .Ed
 .Sh SEE ALSO
 .Xr snmp 1 ,

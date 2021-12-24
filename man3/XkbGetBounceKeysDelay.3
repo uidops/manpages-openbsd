@@ -20,7 +20,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbGetBounceKeysDelay 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbGetBounceKeysDelay 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbGetBounceKeysDelay \- Queries the current BounceKeys delay for a keyboard 
 device.
@@ -192,18 +192,18 @@ The structure for the XkbAccessXNotify event type is as follows:
 
 .nf
 typedef struct {
-    int            type;           /\(** Xkb extension base event code */
-    unsigned long  serial;         /\(** X server serial number for event */
-    Bool           send_event;     /\(** True => synthetically generated */
-    Display *      display;        /\(** server connection where event generated */
-    Time           time;           /\(** server time when event generated */
-    int            xkb_type;       /\(** XkbAccessXNotify */
-    int            device;         /\(** Xkb device ID, will not be XkbUseCoreKbd 
+    int            type;           /\&* Xkb extension base event code */
+    unsigned long  serial;         /\&* X server serial number for event */
+    Bool           send_event;     /\&* True => synthetically generated */
+    Display *      display;        /\&* server connection where event generated */
+    Time           time;           /\&* server time when event generated */
+    int            xkb_type;       /\&* XkbAccessXNotify */
+    int            device;         /\&* Xkb device ID, will not be XkbUseCoreKbd 
 */
-    int            detail;         /\(** XkbAXN_* */
-    KeyCode        keycode;        /\(** key of event */
-    int            slowKeysDelay;  /\(** current SlowKeys delay */
-    int            debounceDelay;  /\(** current debounce delay */
+    int            detail;         /\&* XkbAXN_* */
+    KeyCode        keycode;        /\&* key of event */
+    int            slowKeysDelay;  /\&* current SlowKeys delay */
+    int            debounceDelay;  /\&* current debounce delay */
 } XkbAccessXNotifyEvent;
     
 .fi    

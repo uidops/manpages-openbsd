@@ -1,4 +1,4 @@
-.\" $OpenBSD: ober_set_header.3,v 1.2 2021/03/12 05:18:01 jsg Exp $
+.\" $OpenBSD: ober_set_header.3,v 1.4 2021/08/29 19:00:20 schwarze Exp $
 .\"
 .\" Copyright (c) 2007, 2012 Reyk Floeter <reyk@openbsd.org>
 .\"
@@ -14,7 +14,7 @@
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: March 12 2021 $
+.Dd $Mdocdate: August 29 2021 $
 .Dt OBER_SET_HEADER 3
 .Os
 .Sh NAME
@@ -23,6 +23,7 @@
 .Nm ober_set_writecallback ,
 .Nm ober_link_elements ,
 .Nm ober_replace_elements ,
+.Nm ober_dup ,
 .Nm ober_unlink_elements ,
 .Nm ober_free_element ,
 .Nm ober_free_elements
@@ -44,6 +45,8 @@
 .Fn "ober_link_elements" "struct ber_element *prev" "struct ber_element *elm"
 .Ft "void"
 .Fn "ober_replace_elements" "struct ber_element *prev" "struct ber_element *elm"
+.Ft "struct ber_element *"
+.Fn "ober_dup" "struct ber_element *orig"
 .Ft "struct ber_element *"
 .Fn "ober_unlink_elements" "struct ber_element *prev"
 .Ft "void"
@@ -101,6 +104,9 @@ with
 and frees any dynamically allocated storage associated with
 .Fa prev .
 .Pp
+.Fn ober_dup
+duplicates an element and all linked elements.
+.Pp
 .Fn ober_unlink_elements
 unlinks
 .Fa prev .
@@ -117,6 +123,11 @@ returns the total length of a fully populated
 containing one or more
 .Vt ber_element .
 .Pp
+.Fn ober_dup
+returns a pointer to the duplicated element or
+.Dv NULL
+on error.
+.Pp
 .Fn ober_unlink_elements
 returns a pointer to
 .Vt ber_element .
@@ -129,7 +140,11 @@ returns a pointer to
 ITU-T Recommendation X.690, also known as ISO/IEC 8825-1:
 Information technology - ASN.1 encoding rules.
 .Sh HISTORY
-These functions first appeared as internal functions in
+.Fn ober_dup
+first appeared in
+.Ox 7.0 .
+.Pp
+The other functions first appeared as internal functions in
 .Xr snmpd 8
 in
 .Ox 4.2

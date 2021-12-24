@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbAddGeomColor 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbAddGeomColor 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbAddGeomColor \-  Add one color name to an existing keyboard geometry 
 description
@@ -86,8 +86,8 @@ function.
 .nf
 
     typedef struct _XkbColor {
-        unsigned int    pixel;      /\(** color */
-        char *          spec;       /\(** color name */
+        unsigned int    pixel;      /\&* color */
+        char *          spec;       /\&* color name */
     } XkbColorRec,*XkbColorPtr;
     
 .fi

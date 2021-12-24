@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbComputeShapeTop 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbComputeShapeTop 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbComputeShapeTop \- Determines the bounding box of the top surface of a shape
 .SH SYNOPSIS
@@ -68,8 +68,8 @@ is NULL or if there are no outlines for the shape; otherwise, it returns True.
 .nf
 
 typedef struct _XkbBounds {
-	short	x1,y1;	/\(** upper left corner of the bounds, in mm/10 */
-	short	x2,y2;	/\(** lower right corner of the bounds, in mm/10 */
+	short	x1,y1;	/\&* upper left corner of the bounds, in mm/10 */
+	short	x2,y2;	/\&* lower right corner of the bounds, in mm/10 */
 } XkbBoundsRec, *XkbBoundsPtr;
 
 .fi

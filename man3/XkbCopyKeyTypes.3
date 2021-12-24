@@ -19,7 +19,7 @@
 .\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 .\" DEALINGS IN THE SOFTWARE.
 .\"
-.TH XkbCopyKeyTypes 3 "libX11 1.7.0" "X Version 11" "XKB FUNCTIONS"
+.TH XkbCopyKeyTypes 3 "libX11 1.7.2" "X Version 11" "XKB FUNCTIONS"
 .SH NAME
 XkbCopyKeyTypes \- Copy more than one XkbKeyTypeRec structure
 .SH SYNOPSIS
@@ -94,18 +94,18 @@ and whose total number of valid entries is stored in
 Key types are defined using the following structure:
 .nf
 
-typedef struct {                   /\(** Key Type */
-    XkbModsRec        mods;        /\(** modifiers used to compute shift level */
-    unsigned char     num_levels;  /\(** total # shift levels, do not modify 
+typedef struct {                   /\&* Key Type */
+    XkbModsRec        mods;        /\&* modifiers used to compute shift level */
+    unsigned char     num_levels;  /\&* total # shift levels, do not modify 
 directly */
-    unsigned char     map_count;   /\(** # entries in map, preserve (if non-NULL) 
+    unsigned char     map_count;   /\&* # entries in map, preserve (if non-NULL) 
 */
-    XkbKTMapEntryPtr  map;         /\(** vector of modifiers for each shift level 
+    XkbKTMapEntryPtr  map;         /\&* vector of modifiers for each shift level 
 */
-    XkbModsPtr        preserve;    /\(** mods to preserve for corresponding map 
+    XkbModsPtr        preserve;    /\&* mods to preserve for corresponding map 
 entry */
-    Atom              name;        /\(** name of key type */
-    Atom *            level_names; /\(** array of names of each shift level */
+    Atom              name;        /\&* name of key type */
+    Atom *            level_names; /\&* array of names of each shift level */
 } XkbKeyTypeRec, *XkbKeyTypePtr;
 .fi
 .SH DIAGNOSTICS

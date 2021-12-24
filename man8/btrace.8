@@ -1,4 +1,4 @@
-.\"	$OpenBSD: btrace.8,v 1.4 2021/03/21 06:44:24 jmc Exp $
+.\"	$OpenBSD: btrace.8,v 1.6 2021/09/08 13:29:51 dv Exp $
 .\"
 .\" Copyright (c) 2019 Martin Pieuchot <mpi@openbsd.org>
 .\"
@@ -14,7 +14,7 @@
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: March 21 2021 $
+.Dd $Mdocdate: September 8 2021 $
 .Dt BTRACE 8
 .Os
 .Sh NAME
@@ -23,8 +23,8 @@
 .Sh SYNOPSIS
 .Nm btrace
 .Op Fl lnv
-.Op Fl p Ar pid
 .Op Fl e Ar program | Ar file
+.Op Ar argument ...
 .Sh DESCRIPTION
 The
 .Nm
@@ -34,9 +34,9 @@ It interprets the
 .Xr bt 5
 program in
 .Ar file
-and communicates with the dynamic tracer device using the interface
-described
-in
+with optional
+.Ar arguments
+and communicates with the dynamic tracer device using the interface described in
 .Xr dt 4 .
 .Pp
 The options are as follows:
@@ -49,10 +49,6 @@ List all available probes.
 .It Fl n
 No action.
 Parse the program and then exit.
-.It Fl p Ar pid
-Enable tracing on the indicated process ID (only one
-.Fl p
-flag is permitted).
 .It Fl v
 Verbose mode.
 Causes
