@@ -24,9 +24,8 @@
 #* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#manpages_path=/opt/manpages-openbsd
+manpages_path=/opt/manpages-openbsd
 
-manpages_path=.
 first_method() {
 	manpage=$(find $manpages_path/man*/ -iname "$1*" | head -1)
 	man $manpage
